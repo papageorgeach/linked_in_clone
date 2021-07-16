@@ -1,0 +1,22 @@
+div.formtitle {
+
+    font-size: medium;
+    color: rgb(80, 78, 78);
+
+}
+
+div.post {
+    border: 3px solid rgb(51, 51, 51);
+}
+
+div.text {
+    margin: 5px;
+    font-size: small;
+    color: rgb(0, 0, 0);
+}
+
+div.title {
+    margin: 5px;
+    font-size: large;
+    color: rgb(0, 0, 0);
+}

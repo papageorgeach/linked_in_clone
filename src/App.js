@@ -1,7 +1,11 @@
 
 import './App.css';
 import PostList from "./PostList";
+
 import React , {useState, useRef} from 'react'
+import { BrowserRouter as Router,Link , NavLink, Switch, Route } from 'react-router-dom'
+
+
 
 
 
@@ -26,18 +30,47 @@ function App() {
     const add = {name , text}
 
 
-    setPosts(prevPosts => 
-      {
-        const rand = Math.floor(Math.random() * 100);
-        return [ ...prevPosts, {id: rand, name: name, text: text}]
-      })
-
+    var st = 'http://localhost:4000/add'  +'?title=' +  name + '&text=' + text + '&likes=0';
+    console.log(st);
+    fetch(st)
+    .catch(err =>console.error(err))
     postNameRef.current.value = null
     postTextRef.current.value = null
+
+    get_products();
   }
 
 
- 
+  function get_products(e) {
+		fetch('http://localhost:4000/posts')  
+		.then(response => response.json())
+		.then(({data})=> {
+			console.log(data)
+
+			var i
+			//storing previous ids
+			var ids =[] 
+			for (let i = 0; i < posts.length; i++){
+				ids[i]=posts[i].id
+				console.log(ids[i])
+			}
+
+			for (let i = 0; i < data.length; i++){
+				if (ids.includes(data[i].id)) {
+					console.log('cont')
+					continue;
+				}
+				setPosts(prevPosts => 
+      			{
+        			console.log(data[i].Likes)
+        			return [ ...prevPosts, {id: data[i].id, name: data[i].Title, text: data[i].Text, Likes: data[i].Likes}]
+      			})
+			}
+		})
+		.catch(err =>console.error(err))
+	}
+
+
 
 
   return (
@@ -49,11 +82,16 @@ function App() {
     <div></div>
     <button onClick = {handleAddTodo}> Upload Todo !</button>
 
+
     <div>---------------------------------------</div>
     <div>
-      Todos:
+      Posts:
+
+
+      
     </div>
     <PostList postList = {posts}/>
+    
     </>
   )
 }
